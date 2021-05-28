@@ -1,0 +1,200 @@
+<?php
+/**
+ * The Header: Logo and main menu
+ *
+ * @package WordPress
+ * @subpackage WEEDLES
+ * @since WEEDLES 1.0
+ */
+?><!DOCTYPE html>
+<html <?php language_attributes(); ?> class="no-js scheme_<?php
+										 // Class scheme_xxx need in the <html> as context for the <body>!
+										 echo esc_attr(weedles_get_theme_option('color_scheme'));
+										 ?>">
+<head>
+	<?php wp_head(); ?>
+	<meta name="google-site-verification" content="fTO61eAxclm3Tww-dXkdDHiemzw3tAJTRkl1SoAbD5Q" />
+	
+	<!-- Global site tag (gtag.js) - Google Ads: 599884451 -->
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-173924850-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-173924850-1');
+</script>
+
+<!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '310909350053026');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=310909350053026&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
+	
+	
+	<script>
+		 jQuery(document).one('click','#place_order',function(){
+		//alert('test');
+    var am = jQuery('.order-total').find('.woocommerce-Price-amount').text();
+		//alert(am);
+    slice = am.slice(1);
+	   var am1=slice.replace(/,/g, '');
+    amount= parseFloat(am1).toFixed(2);
+	   //alert(amount);
+		
+//     fbq('track', 'Purchase', {currency: "INR", value: amount});
+			  
+	fbq('track', 'CompleteRegistration',{
+value: amount,
+currency: 'INR'
+});
+})	
+		
+		
+	</script>
+	
+	<?php if ( is_checkout() && !empty( is_wc_endpoint_url('order-received') ) ) { ?>
+	<!-- Event snippet for Purchase conversion page -->
+	<script>
+	gtag('event', 'conversion', {
+		'send_to': 'AW-599884451/OMP5COrY8dwBEKOFhp4C',
+		'value': 1.0,
+		'currency': 'INR',
+		'transaction_id': ''
+	});
+	<?php 
+		global $wp_query;
+		if( !empty( $wp_query->query_vars[ 'order-received' ] ) ) {
+			$order = wc_get_order( $wp_query->query_vars[ 'order-received' ] );			
+		}
+	?>
+	fbq('track', 'Purchase', {currency: "INR", value: <?php echo $order->get_total();?>});
+  	
+	</script>
+	<?php }?>
+	<?php if ( is_page( 'cart' ) || is_cart() ) {?>
+	<!-- Event snippet for Add to basket conversion page -->
+	<script>
+	gtag('event', 'conversion', {
+		'send_to': 'AW-599884451/_Tg-CNT7hd0BEKOFhp4C',
+		'value': 1.0,
+		'currency': 'INR'
+	});
+	fbq('track', 'AddToCart');	
+	</script>
+	<?php }?>
+	<?php if ( is_checkout() ) {?>
+<!-- Event snippet for Begin checkout conversion page -->
+<script>
+  gtag('event', 'conversion', {
+      'send_to': 'AW-599884451/d89xCIv9hd0BEKOFhp4C',
+      'value': 1.0,
+      'currency': 'INR'
+  });
+	fbq('track', 'AddPaymentInfo');
+ fbq('track', 'InitiateCheckout');
+	
+		
+	
+</script>
+<?php }?>
+<?php if ( is_product() ) {?>
+<!-- Event snippet for Page view conversion page -->
+<script>
+  gtag('event', 'conversion', {
+      'send_to': 'AW-599884451/Eg6mCJLK6NwBEKOFhp4C',
+      'value': 1.0,
+      'currency': 'INR'
+  });
+ //fbq('track', 'PageView');	
+ fbq('track', 'ViewContent');	
+	
+	jQuery(document).on('click','.single_add_to_cart_button',function() {
+		/* 
+		var spandata=jQuery('.product_id').find('span').html();
+		//alert(spandata);
+		var product_title=jQuery('.product_title').html();
+		//alert(product_title)
+		//	alert(content_id);
+		
+   var am1 = jQuery('#product-'+spandata).find('.woocommerce-Price-amount').find('bdi').text();
+    slice1 = am1.slice(1);
+		//alert(slice1)
+    amount1= parseFloat(slice1);
+		*/
+		
+//  fbq('track', 'AddToCart', {
+//  content_name: product_title,
+//  content_ids: spandata,
+//  content_type: 'product',
+// // value: amount1,
+//  currency: 'INR'
+//  });
+		
+		fbq('track', 'AddToCart');	
+		
+ });
+	
+	
+	
+</script>
+<?php }?>
+</head>
+
+<body <?php	body_class(); ?>>
+
+<div class="preloader">
+<img src="<?php echo get_template_directory_uri()?>/images/preloader_whitesquare.png" class="preloader__image" alt="Preloader">
+</div>
+    <?php wp_body_open(); ?>
+
+	<?php do_action( 'weedles_action_before' ); ?>
+
+	<div class="body_wrap">
+
+		<div class="page_wrap">
+
+			<?php
+			// Desktop header
+			$weedles_header_style = weedles_get_theme_option("header_style");
+			if (strpos($weedles_header_style, 'header-custom-')===0) $weedles_header_style = 'header-custom';
+			get_template_part( "templates/{$weedles_header_style}");
+
+			// Side menu
+			if (in_array(weedles_get_theme_option('menu_style'), array('left', 'right'))) {
+				get_template_part( 'templates/header-navi-side' );
+			}
+
+			// Mobile header
+			get_template_part( 'templates/header-mobile');
+			?>
+
+			<div class="page_content_wrap scheme_<?php echo esc_attr(weedles_get_theme_option('color_scheme')); ?>">
+
+				<?php if (weedles_get_theme_option('body_style') != 'fullscreen') { ?>
+				<div class="content_wrap">
+				<?php } ?>
+
+					<?php
+					// Widgets area above page content
+					weedles_create_widgets_area('widgets_above_page');
+					?>				
+
+					<div class="content">
+						<?php
+						// Widgets area inside page content
+						weedles_create_widgets_area('widgets_above_content');
+						?>				
